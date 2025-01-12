@@ -25,7 +25,7 @@ func (r *DynamoDBRepository) Save(user domain.User) error {
 	_, err := r.client.PutItem(context.TODO(), &dynamodb.PutItemInput{
 		TableName: &r.tableName,
 		Item: map[string]types.AttributeValue{
-			"ID":    &types.AttributeValueMemberS{Value: user.ID},
+			"Id":    &types.AttributeValueMemberS{Value: user.Id},
 			"Name":  &types.AttributeValueMemberS{Value: user.Name},
 			"Email": &types.AttributeValueMemberS{Value: user.Email},
 		},
@@ -38,7 +38,7 @@ func (r *DynamoDBRepository) FindByID(id string) (*domain.User, error) {
 	result, err := r.client.GetItem(context.TODO(), &dynamodb.GetItemInput{
 		TableName: &r.tableName,
 		Key: map[string]types.AttributeValue{
-			"ID": &types.AttributeValueMemberS{Value: id},
+			"Id": &types.AttributeValueMemberS{Value: id},
 		},
 	})
 	if err != nil {
@@ -50,7 +50,7 @@ func (r *DynamoDBRepository) FindByID(id string) (*domain.User, error) {
 	}
 
 	user := &domain.User{
-		ID:    result.Item["ID"].(*types.AttributeValueMemberS).Value,
+		Id:    result.Item["Id"].(*types.AttributeValueMemberS).Value,
 		Name:  result.Item["Name"].(*types.AttributeValueMemberS).Value,
 		Email: result.Item["Email"].(*types.AttributeValueMemberS).Value,
 	}

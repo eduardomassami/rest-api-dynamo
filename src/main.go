@@ -9,6 +9,7 @@ import (
 	"github.com/eduardomassami/rest-api-dynamo/application"
 	"github.com/eduardomassami/rest-api-dynamo/config"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 var (
@@ -16,6 +17,11 @@ var (
 )
 
 func main() {
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	logger = config.GetLogger("main")
 	dbClient := config.GetDynamoDB()
