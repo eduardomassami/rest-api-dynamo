@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  localstack:
+    container_name: "ecsexample"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+    environment:
+      - DEBUG=${DEBUG-}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - SERVICES=dynamodb
+    volumes:
+      - "./dynamoTable.json:/tmp/dynamo/dynamoTable.json"
+      - "./create_resources.sh:/docker-entrypoint-initaws.d/create_resources.sh"
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - /var/run/docker.sock:/var/run/docker.sock
