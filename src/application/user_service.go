@@ -1,16 +1,29 @@
 package application
 
-import "github.com/eduardomassami/rest-api-dynamo/domain"
+import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/eduardomassami/rest-api-dynamo/domain"
+)
 
 type UserService struct {
-	repo domain.UserRepository
+	repo   domain.UserRepository
+	bucket domain.UserBucket
 }
 
-func NewUserService(repo domain.UserRepository) *UserService {
-	return &UserService{repo: repo}
+func NewUserService(repo domain.UserRepository, bucket domain.UserBucket) *UserService {
+	return &UserService{repo: repo, bucket: bucket}
 }
 
 func (s *UserService) CreateUser(user domain.User) error {
+
+	userJSON, err := json.Marshal(user)
+	if err != nil {
+		return fmt.Errorf("erro ao serializar usuário: %w", err)
+	}
+	s.bucket.Save(userJSON)
+
 	return s.repo.Save(user)
 }
 
