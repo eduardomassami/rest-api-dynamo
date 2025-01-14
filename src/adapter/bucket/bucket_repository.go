@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -25,6 +26,7 @@ func NewBucket(client *s3.Client, bucketName string, objectKey string) *Bucket {
 
 func (b *Bucket) Save(user []byte) error {
 
+	log.Printf("Conteúdo do JSON enviado: %s", string(user))
 	_, err := b.client.PutObject(context.TODO(), &s3.PutObjectInput{
 		Bucket:      aws.String(b.bucketName),
 		Key:         aws.String(b.objectKey),

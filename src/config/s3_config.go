@@ -10,7 +10,7 @@ import (
 func InitializeS3(cfg *aws.Config) *s3.Client {
 	if os.Getenv("LOCALSTACK") == "true" {
 		return s3.NewFromConfig(*cfg, func(o *s3.Options) {
-			o.BaseEndpoint = aws.String(os.Getenv("AWS_ENDPOINT"))
+			o.BaseEndpoint = aws.String(os.Getenv("AWS_ENDPOINT_S3"))
 		})
 	}
 

@@ -3,6 +3,7 @@ package application
 import (
 	"encoding/json"
 	"fmt"
+	"sync"
 
 	"github.com/eduardomassami/rest-api-dynamo/domain"
 )
@@ -22,9 +23,25 @@ func (s *UserService) CreateUser(user domain.User) error {
 	if err != nil {
 		return fmt.Errorf("erro ao serializar usuário: %w", err)
 	}
-	s.bucket.Save(userJSON)
 
-	return s.repo.Save(user)
+	var wg sync.WaitGroup
+	var saveDynamoError error
+
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+		s.bucket.Save(userJSON)
+	}()
+
+	go func() {
+		defer wg.Done() // Marcar como concluída
+		saveDynamoError = s.repo.Save(user)
+	}()
+
+	wg.Wait()
+
+	return saveDynamoError
 }
 
 func (s *UserService) GetUser(id string) (*domain.User, error) {

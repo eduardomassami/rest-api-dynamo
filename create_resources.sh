@@ -11,4 +11,4 @@ awslocal --endpoint-url=http://localhost:4566 --region=sa-east-1 dynamodb put-it
 
 awslocal --endpoint-url=http://localhost:4566 --region=sa-east-1 dynamodb scan --table-name TestTable
 
-awslocal s3api --endpoint-url=http://localhost:4566 create-bucket --bucket test-bucket
+awslocal s3api create-bucket --endpoint-url=http://localhost:4566 --bucket test-bucket --region sa-east-1 --create-bucket-configuration LocationConstraint=sa-east-1

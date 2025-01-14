@@ -10,6 +10,7 @@ services:
       - DEBUG=${DEBUG-}
       - DOCKER_HOST=unix:///var/run/docker.sock
       - SERVICES=dynamodb,s3
+      - S3_FORCE_PATH_STYLE=true
     volumes:
       - "./dynamoTable.json:/tmp/dynamo/dynamoTable.json"
       - "./create_resources.sh:/docker-entrypoint-initaws.d/create_resources.sh"
